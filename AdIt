@@ -7,8 +7,7 @@
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SERVER_URL="http://127.0.0.1:8000"
 
-# Auto-detect python/aider/uvicorn
-PYTHON=$(which python3)
+# Auto-detect aider/uvicorn
 AIDER=$(which aider)
 UVICORN=$(which uvicorn)
 
@@ -24,23 +23,23 @@ if [ -z "$UVICORN" ]; then
     exit 1
 fi
 
-# Check if uvicorn is already running
+# Check if server is already running
 if ! curl -s "$SERVER_URL/v1/models" > /dev/null 2>&1; then
-    echo "[AdIt] Starting RAG server..."
+    echo "[AdIt] Starting RAG server (this may take ~30 seconds)..."
     cd "$INSTALL_DIR"
     "$UVICORN" app.server:app \
         --port 8000 \
         --workers 1 \
         > /tmp/AdIt_server.log 2>&1 &
 
-    # Wait for server to be ready (max 30 seconds)
-    for i in $(seq 1 30); do
+    # Wait for server to be ready (max 60 seconds)
+    for i in $(seq 1 60); do
         if curl -s "$SERVER_URL/v1/models" > /dev/null 2>&1; then
             echo "[AdIt] Server ready."
             break
         fi
         sleep 1
-        if [ "$i" -eq 30 ]; then
+        if [ "$i" -eq 60 ]; then
             echo "[AdIt] ERROR: Server failed to start. Check /tmp/AdIt_server.log"
             exit 1
         fi
