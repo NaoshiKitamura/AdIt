@@ -1,11 +1,11 @@
 # AdIt - Lab AI Assistant
 
 A CLI-based AI assistant that answers questions, creates files, and edits code
-using RAG over lab documents (LAMMPS manuals, research reports, etc.).
+using RAG over lab documents (manuals, research reports, etc.).
 
 ## Stack
 
-- **LLM**: Ollama + qwen3.5:9b
+- **LLM**: Ollama + qwen3.5
 - **RAG**: ChromaDB + HuggingFace multilingual-e5-small
 - **API**: FastAPI (OpenAI-compatible)
 - **CLI**: Aider
@@ -22,7 +22,7 @@ using RAG over lab documents (LAMMPS manuals, research reports, etc.).
     conda activate AdIt
     pip install fastapi uvicorn httpx langchain-chroma langchain-huggingface \
                 langchain-community sentence-transformers beautifulsoup4 \
-                lxml pypdf aider-chat
+                lxml pypdf aider-chat typing_extensions
 
 ### 3. Build the RAG database
 
