@@ -10,6 +10,14 @@ using RAG over lab documents (LAMMPS manuals, research reports, etc.).
 - **API**: FastAPI (OpenAI-compatible)
 - **CLI**: Aider
 
+## Supported Document Formats
+
+- HTML / HTM
+- PDF
+- TXT
+- DOCX (Word)
+- PPTX (PowerPoint)
+
 ## For Administrators: Installation
 
 ### 1. Clone the repository
@@ -22,17 +30,21 @@ using RAG over lab documents (LAMMPS manuals, research reports, etc.).
     conda activate AdIt
     pip install fastapi uvicorn httpx langchain-chroma langchain-huggingface \
                 langchain-community sentence-transformers beautifulsoup4 \
-                lxml pypdf aider-chat
+                lxml pypdf aider-chat python-docx python-pptx
 
 ### 3. Add documents
 
-Place documents (HTML, PDF, TXT) in /opt/AdIt/documents/
+Place documents (HTML, PDF, TXT, DOCX, PPTX) in /opt/AdIt/documents/
 
 ### 4. Build the RAG database
 
     conda activate AdIt
     cd /opt/AdIt
     python -m scripts.build_db
+
+To rebuild from scratch:
+
+    python -m scripts.build_db --rebuild
 
 ### 5. Install the command
 
@@ -61,8 +73,12 @@ The RAG server starts automatically and the chat session begins.
 
 ## Adding Documents
 
-Place HTML, PDF, or text files in documents/ and rebuild the database:
+Place HTML, PDF, TXT, DOCX, or PPTX files in documents/ and update the database:
 
     conda activate AdIt
     cd /opt/AdIt
-    python scripts/build_db.py
+    python -m scripts.build_db
+
+To rebuild the entire database from scratch:
+
+    python -m scripts.build_db --rebuild
