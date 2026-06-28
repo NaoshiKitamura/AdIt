@@ -3,7 +3,7 @@ A CLI-based AI assistant that answers questions, creates files, and edits code
 using RAG over lab documents (LAMMPS manuals, research reports, etc.).
 
 ## Stack
-- **LLM**: Ollama + qwen3.5:9b
+- **LLM**: Ollama (default: qwen3.5:9b, switchable — see [Switching LLM Models](#switching-llm-models))
 - **RAG**: ChromaDB + HuggingFace multilingual-e5-small
 - **API**: FastAPI (OpenAI-compatible)
 - **CLI**: Aider
