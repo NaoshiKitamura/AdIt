@@ -43,14 +43,27 @@ To rebuild from scratch:
     ln -s /opt/AdIt/AdIt /usr/local/bin/AdIt
 
 ## Adding Documents
-Place HTML, PDF, TXT, DOCX, or PPTX files in documents/ and update the database:
+
+Place HTML, PDF, TXT, DOCX, or PPTX files in `documents/` and update the database:
 
     conda activate AdIt
     python -m scripts.build_db
 
-To rebuild the entire database from scratch:
+### Example: LAMMPS Documentation
 
-    python -m scripts.build_db --rebuild
+Download the LAMMPS tarball and extract the HTML manual into `documents/lammps_html/`:
+
+```bash
+# Download the latest stable tarball
+wget https://download.lammps.org/tars/lammps-stable.tar.gz
+
+# Extract only the HTML documentation
+tar -xzf lammps-stable.tar.gz --wildcards '*/doc/html/*' --strip-components=3 -C documents/lammps_html/
+
+# Add to RAG database
+conda activate AdIt
+python -m scripts.build_db
+```
 
 ## For Users: Usage
 
