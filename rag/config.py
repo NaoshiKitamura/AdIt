@@ -14,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 DB_PATH = PROJECT_ROOT / "rag_db"
 
-DOCUMENTS_PATH = PROJECT_ROOT / "tests" / "documents"
+DOCUMENTS_PATH = PROJECT_ROOT / "documents"
 
 # ==========================================================
 # Ollama Models
