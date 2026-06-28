@@ -1,11 +1,11 @@
 # AdIt - Lab AI Assistant
 
 A CLI-based AI assistant that answers questions, creates files, and edits code
-using RAG over lab documents (manuals, research reports, etc.).
+using RAG over lab documents (LAMMPS manuals, research reports, etc.).
 
 ## Stack
 
-- **LLM**: Ollama + qwen3.5
+- **LLM**: Ollama + qwen3.5:9b
 - **RAG**: ChromaDB + HuggingFace multilingual-e5-small
 - **API**: FastAPI (OpenAI-compatible)
 - **CLI**: Aider
@@ -18,28 +18,32 @@ using RAG over lab documents (manuals, research reports, etc.).
 
 ### 2. Create conda environment
 
-    conda create -n AdIt python=3.12
+    conda create -n AdIt python=3.12 -y
     conda activate AdIt
     pip install fastapi uvicorn httpx langchain-chroma langchain-huggingface \
                 langchain-community sentence-transformers beautifulsoup4 \
-                lxml pypdf aider-chat typing_extensions
+                lxml pypdf aider-chat
 
-### 3. Build the RAG database
+### 3. Add documents
 
-Place documents (HTML, PDF, TXT) in /opt/AdIt/documents/, then run:
+Place documents (HTML, PDF, TXT) in /opt/AdIt/documents/
 
+### 4. Build the RAG database
+
+    conda activate AdIt
     cd /opt/AdIt
     python scripts/build_db.py
 
-### 4. Install the command
+### 5. Install the command
 
     chmod +x /opt/AdIt/AdIt
     ln -s /opt/AdIt/AdIt /usr/local/bin/AdIt
 
 ## For Users: Usage
 
-### Start
+### Activate environment and start
 
+    conda activate AdIt
     AdIt
 
 The RAG server starts automatically and the chat session begins.
@@ -59,5 +63,6 @@ The RAG server starts automatically and the chat session begins.
 
 Place HTML, PDF, or text files in documents/ and rebuild the database:
 
+    conda activate AdIt
     cd /opt/AdIt
     python scripts/build_db.py
