@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# ==========================================================
+# AdIt - AI assistant for the lab
+# ==========================================================
+
+INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SERVER_URL="http://127.0.0.1:8000"
+VENV="/home/naoshi/.conda/envs/AdIt"
+AIDER="$VENV/bin/aider"
+UVICORN="$VENV/bin/uvicorn"
+
+# uvicornが起動しているか確認
+if ! curl -s "$SERVER_URL/v1/models" > /dev/null 2>&1; then
+    echo "[AdIt] Starting RAG server..."
+    cd "$INSTALL_DIR"
+    "$UVICORN" app.server:app \
+        --port 8000 \
+        --workers 1 \
+        > /tmp/AdIt_server.log 2>&1 &
+
+    # 起動待ち（最大30秒）
+    for i in $(seq 1 30); do
+        if curl -s "$SERVER_URL/v1/models" > /dev/null 2>&1; then
+            echo "[AdIt] Server ready."
+            break
+        fi
+        sleep 1
+        if [ "$i" -eq 30 ]; then
+            echo "[AdIt] ERROR: Server failed to start. Check /tmp/AdIt_server.log"
+            exit 1
+        fi
+    done
+else
+    echo "[AdIt] Server already running."
+fi
+
+# Aider起動
+cd "$INSTALL_DIR"
+"$AIDER" \
+    --openai-api-base "$SERVER_URL/v1" \
+    --openai-api-key dummy \
+    --model gpt-4o-mini \
+    --no-auto-commits \
+    --chat-mode ask

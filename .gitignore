@@ -1,0 +1,23 @@
+cat > ~/research/LLM/.gitignore << 'EOF'
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Aider
+.aider*
+
+# RAG DB（git管理しない）
+rag_db/
+
+# Documents（git管理しない）
+tests/documents/
+tests/lmp_file_templates/
+
+# Logs
+*.log
+/tmp/
+
+# Environment
+.env
+EOF
