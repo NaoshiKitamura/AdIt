@@ -41,13 +41,6 @@ def build_messages(messages: list, context: str):
 
     merged_system = "\n\n".join(system_messages)
 
-    # Language instruction
-    language_instruction = "Always respond in the same language as the user's input."
-    if merged_system:
-        merged_system = language_instruction + "\n\n" + merged_system
-    else:
-        merged_system = language_instruction
-
     ollama_messages = []
     if merged_system:
         ollama_messages.append({
@@ -67,14 +60,16 @@ def build_messages(messages: list, context: str):
         role = m["role"]
         content = m["content"]
         if role == "user" and content == last_user_content and not last_user_added:
-            content = f"""
-Use the following reference material if it is relevant.
+            content = f"""Use the following reference material if it is relevant.
 =====================
 {context}
 =====================
-User question:
-{content}
-"""
+
+IMPORTANT: You MUST reply in the same language as the question below.
+If the question is in Japanese, reply entirely in Japanese.
+If the question is in English, reply entirely in English.
+
+Question: {content}"""
             last_user_added = True
         ollama_messages.append({
             "role": role,
