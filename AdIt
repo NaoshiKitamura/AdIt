@@ -6,11 +6,25 @@
 
 INSTALL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SERVER_URL="http://127.0.0.1:8000"
-VENV="/home/naoshi/.conda/envs/AdIt"
-AIDER="$VENV/bin/aider"
-UVICORN="$VENV/bin/uvicorn"
 
-# uvicornが起動しているか確認
+# Auto-detect python/aider/uvicorn
+PYTHON=$(which python3)
+AIDER=$(which aider)
+UVICORN=$(which uvicorn)
+
+if [ -z "$AIDER" ]; then
+    echo "[AdIt] ERROR: aider not found. Please install it:"
+    echo "  pip install aider-chat"
+    exit 1
+fi
+
+if [ -z "$UVICORN" ]; then
+    echo "[AdIt] ERROR: uvicorn not found. Please install it:"
+    echo "  pip install uvicorn"
+    exit 1
+fi
+
+# Check if uvicorn is already running
 if ! curl -s "$SERVER_URL/v1/models" > /dev/null 2>&1; then
     echo "[AdIt] Starting RAG server..."
     cd "$INSTALL_DIR"
@@ -19,7 +33,7 @@ if ! curl -s "$SERVER_URL/v1/models" > /dev/null 2>&1; then
         --workers 1 \
         > /tmp/AdIt_server.log 2>&1 &
 
-    # 起動待ち（最大30秒）
+    # Wait for server to be ready (max 30 seconds)
     for i in $(seq 1 30); do
         if curl -s "$SERVER_URL/v1/models" > /dev/null 2>&1; then
             echo "[AdIt] Server ready."
@@ -35,7 +49,7 @@ else
     echo "[AdIt] Server already running."
 fi
 
-# Aider起動
+# Launch Aider
 cd "$INSTALL_DIR"
 "$AIDER" \
     --openai-api-base "$SERVER_URL/v1" \
