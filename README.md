@@ -51,16 +51,21 @@ Place HTML, PDF, TXT, DOCX, or PPTX files in `documents/` and update the databas
 
 ### Example: LAMMPS Documentation
 
-Download the LAMMPS tarball and extract the HTML manual into `documents/lammps_html/`:
+The LAMMPS HTML manual is a great way to try out AdIt. If you don't already have the LAMMPS repository, clone it first:
 
 ```bash
-# Download the latest stable tarball
-wget https://download.lammps.org/tars/lammps-stable.tar.gz
+git clone https://github.com/lammps/lammps.git
+```
 
-# Extract only the HTML documentation
-tar -xzf lammps-stable.tar.gz --wildcards '*/doc/html/*' --strip-components=3 -C documents/lammps_html/
+Then build the HTML documentation and copy it to AdIt:
 
-# Add to RAG database
+```bash
+cd lammps/doc
+make html
+
+mkdir -p /opt/AdIt/documents/lammps_html
+cp -r html/* /opt/AdIt/documents/lammps_html/
+
 conda activate AdIt
 python -m scripts.build_db
 ```
@@ -120,22 +125,3 @@ All parameters below are defined in `rag/config.py`.
 | `SEARCH_K` | `8` | Number of chunks retrieved from ChromaDB |
 | `TOP_K` | `3` | Number of chunks kept after reranking |
 | `PAGE_CONTENT_LIMIT` | `1500` | Max characters per chunk sent to reranker |
-| `CONTEXT_MAX_CHARS` | `1200` | Max characters of context passed to the LLM |
-
-Reducing `SEARCH_K` and `TOP_K` speeds up responses. Increasing them may improve answer quality.
-
-### Chunking
-
-| Variable | Default | Description |
-|---|---|---|
-| `CHUNK_SIZE` | `1000` | Number of characters per chunk |
-| `CHUNK_OVERLAP` | `200` | Overlap between consecutive chunks |
-
-After changing chunking parameters, run:
-
-```bash
-conda activate AdIt
-python -m scripts.build_db
-```
-
-The updated `build_db.py` automatically detects chunk config changes and re-embeds only the affected files.
