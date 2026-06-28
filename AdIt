@@ -48,11 +48,11 @@ else
     echo "[AdIt] Server already running."
 fi
 
-# Launch Aider
-cd "$INSTALL_DIR"
+# Launch Aider from user's current directory
 "$AIDER" \
     --openai-api-base "$SERVER_URL/v1" \
     --openai-api-key dummy \
     --model gpt-4o-mini \
     --no-auto-commits \
-    --chat-mode ask
+    --chat-mode ask \
+    --no-git
