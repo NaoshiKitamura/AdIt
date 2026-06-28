@@ -32,7 +32,7 @@ Place documents (HTML, PDF, TXT) in /opt/AdIt/documents/
 
     conda activate AdIt
     cd /opt/AdIt
-    python scripts/build_db.py
+    python -m scripts.build_db
 
 ### 5. Install the command
 
