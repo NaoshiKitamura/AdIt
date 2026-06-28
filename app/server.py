@@ -69,12 +69,18 @@ async def call_ollama(model: str, messages: list) -> str:
                 "model": model,
                 "messages": messages,
                 "stream": False,
+                "think": False,
             },
         )
         print("=== OLLAMA RESPONDED ===", flush=True)
+        print(f"=== STATUS: {response.status_code} ===", flush=True)
         data = response.json()
+        print(f"=== DATA KEYS: {list(data.keys())} ===", flush=True)
         content = data["message"]["content"]
-        return strip_thinking(content)
+        print(f"=== CONTENT LENGTH: {len(content)} ===", flush=True)
+        stripped = strip_thinking(content)
+        print(f"=== STRIPPED LENGTH: {len(stripped)} ===", flush=True)
+        return stripped
 
 # ==========================================================
 # Streaming response generator
@@ -192,5 +198,5 @@ async def chat(req: ChatRequest):
 
     llm_model = MODEL_MAP.get(req.model, OLLAMA_CHAT_MODEL)
     content = await call_ollama(llm_model, messages)
-
+    print(f"=== CONTENT RECEIVED IN CHAT ===", flush=True) 
     return _make_response(req.model, content, req.stream)
