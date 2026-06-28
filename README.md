@@ -82,3 +82,30 @@ Place HTML, PDF, TXT, DOCX, or PPTX files in documents/ and update the database:
 To rebuild the entire database from scratch:
 
     python -m scripts.build_db --rebuild
+
+## Switching LLM Models
+
+AdIt allows you to switch the LLM model depending on your use case and required response speed.
+
+Edit `rag/config.py`:
+
+```python
+OLLAMA_CHAT_MODEL = "your-model-name"
+```
+
+Then pull the model with Ollama before starting:
+
+```bash
+ollama pull your-model-name
+```
+
+For available models, search the [Ollama model library](https://ollama.com/library).
+
+### Example
+```bash
+# Switch to a lighter model for faster responses
+ollama pull qwen2.5:3b
+
+# Switch to a larger model for higher quality
+ollama pull qwen2.5:27b
+```
