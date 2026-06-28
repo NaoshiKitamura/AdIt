@@ -131,9 +131,11 @@ Reducing `SEARCH_K` and `TOP_K` speeds up responses. Increasing them may improve
 | `CHUNK_SIZE` | `1000` | Number of characters per chunk |
 | `CHUNK_OVERLAP` | `200` | Overlap between consecutive chunks |
 
-After changing chunking parameters, rebuild the database:
+After changing chunking parameters, run:
 
 ```bash
 conda activate AdIt
-python -m scripts.build_db --rebuild
+python -m scripts.build_db
 ```
+
+The updated `build_db.py` automatically detects chunk config changes and re-embeds only the affected files.
